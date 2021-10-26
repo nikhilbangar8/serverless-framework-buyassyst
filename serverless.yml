@@ -1,0 +1,80 @@
+# serverless.yml
+service: myService
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 512 # optional, in MB, default is 1024
+  timeout: 10 # optional, in seconds, default is 6
+  versionFunctions: false # optional, default is true
+  tracing:
+    lambda: true 
+
+functions:
+  athos:
+    handler: athos.hello # required, handler set in AWS Lambda
+    name: athos-lambda # optional, Deployed Lambda name
+    description: Description of what the lambda function does # optional, Description to publish to AWS
+    runtime: python3.8 # optional overwrite, default is provider runtime
+    memorySize: 512 # optional, in MB, default is 1024
+    timeout: 10 # optional, in seconds, default is 6
+    provisionedConcurrency: 3 # optional, Count of provisioned lambda instances
+    reservedConcurrency: 3 # optional, reserved concurrency limit for this function. By default, AWS uses account concurrency limit
+    tracing: PassThrough # optional, overwrite, can be 'Active' or 'PassThrough'
+    vpc:
+      securityGroupIds:
+        - sg-6e7ea059
+      subnetIds:
+        - subnet-230f482d
+        - subnet-342b7679
+
+  parthos:
+    handler: parthos.hello # required, handler set in AWS Lambda
+    name: parthos-lambda # optional, Deployed Lambda name
+    description: Description of what the lambda function does # optional, Description to publish to AWS
+    runtime: python3.8 # optional overwrite, default is provider runtime
+    memorySize: 512 # optional, in MB, default is 1024
+    timeout: 10 # optional, in seconds, default is 6
+    provisionedConcurrency: 3 # optional, Count of provisioned lambda instances
+    reservedConcurrency: 3 # optional, reserved concurrency limit for this function. By default, AWS uses account concurrency limit
+    tracing: PassThrough # optional, overwrite, can be 'Active' or 'PassThrough'
+    vpc:
+      securityGroupIds:
+        - sg-6e7ea059
+      subnetIds:
+        - subnet-849041b5
+        - subnet-ec1d9f8a
+  
+  aramis:
+    handler: aramis.hello # required, handler set in AWS Lambda
+    name: aramis-lambda # optional, Deployed Lambda name
+    description: Description of what the lambda function does # optional, Description to publish to AWS
+    runtime: python3.8 # optional overwrite, default is provider runtime
+    memorySize: 512 # optional, in MB, default is 1024
+    timeout: 10 # optional, in seconds, default is 6
+    provisionedConcurrency: 3 # optional, Count of provisioned lambda instances
+    reservedConcurrency: 3 # optional, reserved concurrency limit for this function. By default, AWS uses account concurrency limit
+    tracing: PassThrough # optional, overwrite, can be 'Active' or 'PassThrough'
+    vpc:
+      securityGroupIds:
+        - sg-6e7ea059
+      subnetIds:
+        - subnet-aac749f5
+        - subnet-e00f86c1
+
+resources: #below is CF template for resources
+  Resources:
+    myDatabase:
+      Type: AWS::RDS::DBInstance
+      Properties:
+        DBName: myDatabase
+        MasterUsername: 'DBADMIN'
+        MasterUserPassword: 'password'
+        Engine: MySQL
+        DBInstanceClass: db.t2.micro
+        StorageType: gp2
+        PubliclyAccessible: True
+        AllocatedStorage: "20"
+        DBInstanceIdentifier: myDatabase
+        BackupRetentionPeriod: 7 #for Backup
+        MultiAZ: True #for availibility and auto restore
