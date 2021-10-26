@@ -2,15 +2,6 @@ import json
 import mysql.connector
 from mysql.connector import Error
 
-def hello(event, context):
-    body = {
-        "message": "Go Serverless v2.0! Your function ATHOS executed successfully!",
-        "input": event,
-    }
-    connect()
-    return {"statusCode": 200, "body": json.dumps(body)}
-
-
 def connect():
     """ Connect to MySQL database """
     conn = None
@@ -28,3 +19,13 @@ def connect():
     finally:
         if conn is not None and conn.is_connected():
             conn.close()
+            
+def hello(event, context):
+    body = {
+        "message": "Go Serverless v2.0! Your function ATHOS executed successfully!",
+        "input": event,
+    }
+    connect()
+    return {"statusCode": 200, "body": json.dumps(body)}
+
+
